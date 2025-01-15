@@ -1,0 +1,63 @@
+---
+sidebar_position: 2
+---
+
+# Install Tailwind CSS
+
+## Create your project
+
+```
+npx create-next-app@latest my-project --typescript --eslint
+cd my-project
+```
+
+## Install Tailwind CSS
+
+```
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+## Configure your template paths
+### tailwind.config.ts
+
+```
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+
+    // Or if using `src` directory:
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+```
+
+## Add the Tailwind directives to your CSS
+### globals.css
+
+```
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+## Start your build process
+
+```
+npm run dev
+```
+
+## Start using Tailwind
+
+```
+export default function Home() {
+  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+}
+```
