@@ -4,3 +4,62 @@ sidebar_position: 1
 
 # Chat Bubble
 The `ChatBubble` component provides an interactive, floating chat UI for your application. It supports features like toggling visibility, sending messages, displaying messages, and indicating typing status. It is designed with accessibility and customization in mind.
+
+## Showcase
+<div style={{height: "75svh", width: "100%", backgroundColor: "transparent", borderRadius:"12px"}}>
+<iframe src="https://willowy-blini-b89ee9.netlify.app/test-chat-bubble" style={{height: "100%", width:"100%", borderRadius:"12px"}}></iframe>
+</div>
+
+## Installation
+
+Run the following command
+```
+npx shadcn@latest add https://uicelerate.vercel.app/registry/chat-bubble.json button input card scroll-area
+```
+
+## Example
+```
+import { ChatBubble, Message } from "@/components/ui/chat-bubble";
+
+export default function App() {
+  const messages: Message[] = [
+    { id: "1", content: "Hello! How can I help you?", isUser: false },
+    { id: "2", content: "I need some information.", isUser: true },
+  ];
+
+  const handleSendMessage = (message: string) => {
+    console.log("Message sent:", message);
+  };
+
+  return (
+    <ChatBubble
+      messages={messages}
+      onSendMessage={handleSendMessage}
+      isTyping={false}
+      title="Support"
+      placeholder="Ask your question..."
+      themeColor="bg-blue-500"
+    />
+  );
+}
+```
+
+## Props
+The `ChatBubble` component accepts the following props:
+
+## Props Table
+
+| Prop Name              | Type                    | Default                      | Description                                                                                   |
+|------------------------|-------------------------|------------------------------|-----------------------------------------------------------------------------------------------|
+| `messages`             | `Message[]`            | `[]`                         | Array of message objects. Each message has `id`, `content`, and `isUser` properties.         |
+| `onSendMessage`        | `(message: string) => void` | N/A                         | Callback function invoked when a message is sent.                                             |
+| `isTyping`             | `boolean`              | `false`                      | Indicates whether the bot is typing.                                                         |
+| `chatIcon`             | `React.ReactNode`      | `<MessageCircle className="h-6 w-6" />` | Icon displayed for opening the chat.                                                         |
+| `title`                | `string`               | `"Chat"`                     | Title displayed at the top of the chat.                                                      |
+| `placeholder`          | `string`               | `"Type your message..."`     | Placeholder text for the input field.                                                        |
+| `sendButtonAriaLabel`  | `string`               | `"Send message"`             | ARIA label for the send button.                                                              |
+| `closeButtonAriaLabel` | `string`               | `"Close chat"`               | ARIA label for the close button.                                                             |
+| `isOpen`               | `boolean`              | `undefined`                  | Controls the open state of the chat (if controlled).                                          |
+| `onToggleOpen`         | `() => void`           | `undefined`                  | Callback function invoked when toggling the chat state (if controlled).                      |
+| `className`            | `string`               | `""`                         | Additional class names for the chat card.                                                    |
+| `themeColor`           | `string`               | `"bg-primary"`               | Color theme for the chat. Used in various parts of the component.                            |
