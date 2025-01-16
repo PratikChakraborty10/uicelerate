@@ -2,58 +2,12 @@
   "name": "floating-chat",
   "type": "registry:ui",
   "dependencies": ["lucide-react"],
-  "registry": {
-    "dependencies": {
-      "shadcn": [
-        {
-          "component": "button",
-          "installation": "npx shadcn-ui@latest add button"
-        },
-        {
-          "component": "card",
-          "installation": "npx shadcn-ui@latest add card"
-        },
-        {
-          "component": "input",
-          "installation": "npx shadcn-ui@latest add input"
-        },
-        {
-          "component": "scroll-area",
-          "installation": "npx shadcn-ui@latest add scroll-area"
-        }
-      ]
-    }
-  },
   "files": [
-    {
-      "path": "components/ui/button.tsx",
-      "content": "npx shadcn-ui@latest add button",
-      "type": "registry:component",
-      "target": "components/ui/button.tsx"
-    },
-    {
-      "path": "components/ui/card.tsx",
-      "content": "npx shadcn-ui@latest add card",
-      "type": "registry:component",
-      "target": "components/ui/card.tsx"
-    },
-    {
-      "path": "components/ui/input.tsx",
-      "content": "npx shadcn-ui@latest add input",
-      "type": "registry:component",
-      "target": "components/ui/input.tsx"
-    },
-    {
-      "path": "components/ui/scroll-area.tsx",
-      "content": "npx shadcn-ui@latest add scroll-area",
-      "type": "registry:component",
-      "target": "components/ui/scroll-area.tsx"
-    },
     {
       "path": "ui/floating-chat.tsx",
       "content": "'use client'\n\nimport { useState, useEffect, useRef } from 'react'\nimport { Button } from \"@/components/ui/button\"\nimport { Card, CardContent, CardFooter, CardHeader } from \"@/components/ui/card\"\nimport { Input } from \"@/components/ui/input\"\nimport { ScrollArea } from \"@/components/ui/scroll-area\"\nimport { MessageCircle, X, Send } from 'lucide-react'\n\nexport interface Message {\n  id: string\n  content: string\n  isUser: boolean\n}\n\ninterface FloatingChatProps {\n  messages: Message[]\n  onSendMessage: (message: string) => void\n  isTyping?: boolean\n  chatIcon?: React.ReactNode\n  title?: string\n  placeholder?: string\n  sendButtonAriaLabel?: string\n  closeButtonAriaLabel?: string\n  isOpen?: boolean\n  onToggleOpen?: () => void\n  className?: string\n  themeColor?: string\n}\n\nexport function FloatingChat({\n  messages,\n  onSendMessage,\n  isTyping = false,\n  chatIcon = <MessageCircle className=\"h-6 w-6\" />,\n  title = \"Chat\",\n  placeholder = \"Type your message...\",\n  sendButtonAriaLabel = \"Send message\",\n  closeButtonAriaLabel = \"Close chat\",\n  isOpen: controlledIsOpen,\n  onToggleOpen,\n  className = \"\",\n  themeColor = \"bg-primary\"\n}: FloatingChatProps) {\n  const [isOpen, setIsOpen] = useState(false)\n  const [inputMessage, setInputMessage] = useState('')\n  const [isAnimating, setIsAnimating] = useState(false)\n  const scrollAreaRef = useRef<HTMLDivElement>(null)\n\n  const isControlled = controlledIsOpen !== undefined && onToggleOpen !== undefined\n  const showChat = isControlled ? controlledIsOpen : isOpen\n\n  const toggleChat = () => {\n    setIsAnimating(true)\n    if (isControlled) {\n      onToggleOpen()\n    } else {\n      setIsOpen(!isOpen)\n    }\n  }\n\n  useEffect(() => {\n    if (isAnimating) {\n      const timer = setTimeout(() => setIsAnimating(false), 300)\n      return () => clearTimeout(timer)\n    }\n  }, [isAnimating])\n\n  useEffect(() => {\n    if (scrollAreaRef.current) {\n      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');\n      if (scrollContainer) {\n        scrollContainer.scrollTop = scrollContainer.scrollHeight;\n      }\n    }\n  }, [messages])\n\n  const handleSendMessage = () => {\n    if (inputMessage.trim() === '') return\n    onSendMessage(inputMessage)\n    setInputMessage('')\n  }\n\n  return (\n    <>\n      {(!showChat || isAnimating) && (\n        <Button\n          className={`fixed bottom-4 right-4 z-50 rounded-full w-12 h-12 shadow-lg transition-all duration-300 ease-in-out ${themeColor} ${\n            showChat ? 'opacity-0 scale-95' : 'opacity-100 scale-100'\n          }`}\n          onClick={toggleChat}\n          aria-label=\"Open chat\"\n        >\n          {chatIcon}\n        </Button>\n      )}\n      {(showChat || isAnimating) && (\n        <div \n          className={`fixed z-50 transition-all duration-300 ease-in-out\n            ${showChat ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}\n            md:bottom-4 md:right-4 md:w-96 md:max-w-[calc(100vw-2rem)] md:max-h-[calc(100vh-2rem)]\n            bottom-0 left-0 right-0 top-0 w-full h-full md:h-auto md:top-auto md:left-auto`}\n        >\n          <Card \n            className={`flex flex-col shadow-xl h-full md:h-[36rem] ${className}`}\n          >\n            <CardHeader className={`flex-shrink-0 flex flex-row items-center justify-between p-4 ${themeColor}`}>\n              <h2 className=\"text-xl font-bold text-primary-foreground\">{title}</h2>\n              <Button\n                variant=\"ghost\"\n                size=\"icon\"\n                className=\"rounded-full text-primary-foreground\"\n                onClick={toggleChat}\n                aria-label={closeButtonAriaLabel}\n              >\n                <X className=\"h-6 w-6\" />\n              </Button>\n            </CardHeader>\n            <CardContent className=\"flex-grow overflow-hidden p-4\">\n              <ScrollArea className=\"h-full pr-4\" style={{ maxHeight: 'calc(100% - 2rem)' }} ref={scrollAreaRef}>\n                <div className=\"space-y-4\">\n                  {messages.map((message) => (\n                    <div\n                      key={message.id}\n                      className={`flex ${\n                        message.isUser ? 'justify-end' : 'justify-start'\n                      }`}\n                    >\n                      <span\n                        className={`inline-block p-2 rounded-lg max-w-[80%] ${\n                          message.isUser\n                            ? `${themeColor} text-primary-foreground`\n                            : 'bg-secondary text-secondary-foreground'\n                        }`}\n                      >\n                        {message.content}\n                      </span>\n                    </div>\n                  ))}\n                  {isTyping && (\n                    <div className=\"flex justify-start\">\n                      <span className=\"inline-block p-2 rounded-lg bg-secondary text-secondary-foreground\">\n                        Typing...\n                      </span>\n                    </div>\n                  )}\n                </div>\n              </ScrollArea>\n            </CardContent>\n            <CardFooter className=\"flex-shrink-0 p-4\">\n              <form\n                onSubmit={(e) => {\n                  e.preventDefault()\n                  handleSendMessage()\n                }}\n                className=\"flex w-full space-x-2\"\n              >\n                <Input\n                  value={inputMessage}\n                  onChange={(e) => setInputMessage(e.target.value)}\n                  placeholder={placeholder}\n                  className=\"flex-grow\"\n                />\n                <Button type=\"submit\" size=\"icon\" aria-label={sendButtonAriaLabel} className={themeColor}>\n                  <Send className=\"h-4 w-4\" />\n                </Button>\n              </form>\n            </CardFooter>\n          </Card>\n        </div>\n      )}\n    </>\n  )\n}",
       "type": "registry:ui",
-      "target": "components/ui/floating-chat.tsx"
+      "target": "components/ui/chat-bubble.tsx"
     }
   ]
 }
