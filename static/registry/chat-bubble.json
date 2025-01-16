@@ -2,11 +2,7 @@
     "name": "floating-chat",
     "type": "registry:ui",
     "dependencies": [
-      "lucide-react",
-      "@/components/ui/button",
-      "@/components/ui/card",
-      "@/components/ui/input",
-      "@/components/ui/scroll-area"
+      "lucide-react"
     ],
     "registry": {
       "dependencies": {
