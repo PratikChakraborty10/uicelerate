@@ -28,25 +28,25 @@
     {
       "path": "components/ui/button.tsx",
       "content": "npx shadcn-ui@latest add button",
-      "type": "init",
+      "type": "registry:component",
       "target": "components/ui/button.tsx"
     },
     {
       "path": "components/ui/card.tsx",
       "content": "npx shadcn-ui@latest add card",
-      "type": "init",
+      "type": "registry:component",
       "target": "components/ui/card.tsx"
     },
     {
       "path": "components/ui/input.tsx",
       "content": "npx shadcn-ui@latest add input",
-      "type": "init",
+      "type": "registry:component",
       "target": "components/ui/input.tsx"
     },
     {
       "path": "components/ui/scroll-area.tsx",
       "content": "npx shadcn-ui@latest add scroll-area",
-      "type": "init",
+      "type": "registry:component",
       "target": "components/ui/scroll-area.tsx"
     },
     {
