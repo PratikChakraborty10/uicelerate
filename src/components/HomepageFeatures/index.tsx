@@ -66,6 +66,8 @@ export default function HomepageFeatures(): ReactNode {
             <Feature key={idx} {...props} />
           ))}
         </div>
+        
+        {/* <div style={{height: "60vh", width: "100%", backgroundColor: "red"}}></div> */}
       </div>
     </section>
   );

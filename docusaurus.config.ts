@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'UICelerate',
-  tagline: 'Dinosaurs are cool',
+  title: 'UIcelerate',
+  tagline: 'UIcelerate - its accelerates your development sprint cycle',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -75,6 +75,9 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
+    metadata: [
+      { name: 'algolia-site-verification', content: '559BE7D8AC5414A4' },
+    ],
     algolia: {
       // Replace with your Algolia credentials
       appId: 'YOUR_APP_ID', // Optional for Algolia DocSearch
@@ -84,9 +87,9 @@ const config: Config = {
       searchParameters: {}, // Optional, pass additional Algolia search parameters
     },
     navbar: {
-      title: 'UICelerate',
+      title: 'UIcelerate',
       logo: {
-        alt: 'UICelerate Logo',
+        alt: 'UIcelerate Logo',
         src: 'img/logo.svg',
       },
       items: [
@@ -94,7 +97,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Docs',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
