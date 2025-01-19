@@ -18,29 +18,54 @@ npx shadcn@latest add https://uicelerate.vercel.app/registry/chat-bubble.json
 ```
 
 ## Example
+
 ```
-import { ChatBubble, Message } from "@/components/ui/chat-bubble";
+'use client'
 
-export default function App() {
-  const messages: Message[] = [
-    { id: "1", content: "Hello! How can I help you?", isUser: false },
-    { id: "2", content: "I need some information.", isUser: true },
-  ];
+import { useState } from 'react'
+import { ChatBubble, Message } from '@/components/ui/chat-bubble'
+import { Headphones } from 'lucide-react'
 
-  const handleSendMessage = (message: string) => {
-    console.log("Message sent:", message);
-  };
+export default function Test() {
+  const [messages, setMessages] = useState<Message[]>([
+    { id: '1', content: "Hello! How can I assist you today?", isUser: false }
+  ])
+  const [isTyping, setIsTyping] = useState(false)
+
+  const handleSendMessage = async (message: string) => {
+    const userMessage: Message = { id: Date.now().toString(), content: message, isUser: true }
+    setMessages(prev => [...prev, userMessage])
+    setIsTyping(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      const response = `You said: "${message}". This is a mock response.`
+      const botMessage: Message = { id: (Date.now() + 1).toString(), content: response, isUser: false }
+      setMessages(prev => [...prev, botMessage])
+    } catch (error) {
+      console.error('Error getting API response:', error)
+      const errorMessage: Message = { id: (Date.now() + 1).toString(), content: "Sorry, I couldn't process your request.", isUser: false }
+      setMessages(prev => [...prev, errorMessage])
+    } finally {
+      setIsTyping(false)
+    }
+  }
 
   return (
-    <ChatBubble
-      messages={messages}
-      onSendMessage={handleSendMessage}
-      isTyping={false}
-      title="Support"
-      placeholder="Ask your question..."
-      themeColor="bg-blue-500"
-    />
-  );
+    <main className="flex h-[100svh] w-full flex-col items-center justify-between p-4 md:p-24">
+      <h1 className="text-4xl font-bold">Welcome to My App</h1>
+      <p className="text-xl">This is a sample page with the chat bubble component.</p>
+      <ChatBubble
+        messages={messages}
+        onSendMessage={handleSendMessage}
+        isTyping={isTyping}
+        title="Customer Support"
+        placeholder="Ask a question..."
+        themeColor="bg-orange-500"
+        chatIcon={<Headphones className="h-6 w-6" />}
+      />
+    </main>
+  )
 }
 ```
 
