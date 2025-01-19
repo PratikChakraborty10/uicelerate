@@ -1,8 +1,7 @@
 {
   "label": "Installation",
-  "position": 2,
-  "link": {
-    "type": "generated-index",
-    "description": "Install Next.js with Create Next App"
-  }
+  "position": 2
+
+ 
+
 }
